@@ -12,6 +12,22 @@ const knex = require('knex')({
   }
 });
 
+const initDB = () => {
+  knex.schema.hasTable('bike').then((exists) => {
+    console.log('######### Exist = ', exists);
+    if (!exists) {
+      return knex.schema.createTable('bike', (t) => {
+        t.string('license_number', 30);
+        t.string('color', 30);
+        t.string('type', 30);
+        t.string('owner', 100);
+        t.date('date');
+        t.string('description', 500);
+      });
+    }
+  });
+};
+
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -20,14 +36,23 @@ const pool = new Pool({
   port: 5432,
 });
 
+const insert = (request, response) =>
+  knex('bike').insert({
+    license_number: 'ABC123',
+    color: 'black',
+    type: 'road',
+    owner: 'rafael',
+    date: new Date(),
+    description: 'desc',
+  }).then((result) => {
+    response.status(200).send('Added succesfully');
+  });
+
+
 const bla = (request, response) => {
-  console.log('BLA');
-  knex.select('*').from('pg_catalog.pg_tables').asCallback(
-    function(err, result) {
-      console.log('Hi I`m still here in this callback!');
-      console.log(result);
-    });
-  response.status(200).send('BLA');
+  return knex.select().from('bike').then((result) => {
+    response.status(200).json(result);
+  });
 };
 
 const getUsers = (request, response) => {
@@ -95,4 +120,6 @@ module.exports = {
   updateUser,
   deleteUser,
   bla,
+  initDB,
+  insert,
 };
