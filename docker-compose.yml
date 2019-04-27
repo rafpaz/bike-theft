@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
       - "9229:9229"
-    command: ['nodemon', 'index.js']
+    command: ['nodemon', 'app.js']
     volumes:
     - type: bind
       source: .
@@ -15,7 +15,7 @@ services:
     environment:
     - DB_HOST=postgres
     - DB_USER=postgres
-    - DB_NAME=docker-blog
+    - DB_NAME=bike-theft
     - DB_PWD=postgres
     container_name: app
 
@@ -27,5 +27,5 @@ services:
     volumes:
     - .:/data2
     environment:
-    - POSTGRES_DB=docker-blog
+    - POSTGRES_DB=bike-theft
     container_name: db
