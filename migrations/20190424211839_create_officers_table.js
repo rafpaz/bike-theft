@@ -1,11 +1,7 @@
-exports.up = knex => {
-  return knex.schema.createTable('officers', (t) => {
-    t.increments();
-    t.string('name', 100).notNullable();
-    t.enu('status', ['available', 'busy']);
-  });
-};
+exports.up = knex => knex.schema.createTable('officers', (t) => {
+  t.increments();
+  t.string('name', 100).notNullable();
+  t.enu('status', ['available', 'busy']);
+});
 
-exports.down = knex => {
-  return knex.schema.dropTable('officers');
-};
+exports.down = knex => knex.schema.dropTable('officers');
